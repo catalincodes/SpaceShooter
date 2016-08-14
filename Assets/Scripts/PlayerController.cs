@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
     public float tilt;
 
     public float fireRate;
-    private float nextFire;
+	private float nextFire = 0.0F;
 
     public Boundary boundary;
     public GameObject shot;
@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        nextFire = 0.0F;
     }
 
     //Fixed Update is called automatically before each Physics step. Executed once per physics step
@@ -44,10 +43,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     //Update is called at every frame change
-    void update()
+    void Update()
     {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
+		{
             nextFire = Time.time + fireRate;
             GameObject clone = Instantiate(shot, shotSpawn.position, shotSpawn.rotation) as GameObject;
         }
