@@ -8,16 +8,22 @@ public class Boundary
 }
 
 public class PlayerController : MonoBehaviour {
-
-
+    
     private Rigidbody rb;
     public float speed;
     public float tilt;
+
+    public float fireRate;
+    private float nextFire;
+
     public Boundary boundary;
+    public GameObject shot;
+    public Transform shotSpawn;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        nextFire = 0.0F;
     }
 
     //Fixed Update is called automatically before each Physics step. Executed once per physics step
@@ -36,4 +42,15 @@ public class PlayerController : MonoBehaviour {
         );
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, rb.velocity.x * (-1) * tilt);
     }
+
+    //Update is called at every frame change
+    void update()
+    {
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            GameObject clone = Instantiate(shot, shotSpawn.position, shotSpawn.rotation) as GameObject;
+        }
+    }
 }
+
