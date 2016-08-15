@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour {
     //Update is called at every frame change
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
+		if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
 		{
             nextFire = Time.time + fireRate;
             GameObject clone = Instantiate(shot, shotSpawn.position, shotSpawn.rotation) as GameObject;	
