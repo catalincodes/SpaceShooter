@@ -10,6 +10,7 @@ public class Boundary
 public class PlayerController : MonoBehaviour {
     
     private Rigidbody rb;
+	private AudioSource audioSource;
     public float speed;
     public float tilt;
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+		audioSource = GetComponent<AudioSource> ();
     }
 
     //Fixed Update is called automatically before each Physics step. Executed once per physics step
@@ -48,7 +50,8 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
 		{
             nextFire = Time.time + fireRate;
-            GameObject clone = Instantiate(shot, shotSpawn.position, shotSpawn.rotation) as GameObject;
+            GameObject clone = Instantiate(shot, shotSpawn.position, shotSpawn.rotation) as GameObject;	
+			audioSource.Play();
         }
     }
 }
