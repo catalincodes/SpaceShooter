@@ -2,26 +2,51 @@
 using System.Collections;
 
 public class GameController : MonoBehaviour {
-	public GameObject hazard;
+	public GameObject[] hazards;
 	public Vector3 spawnValues;
 	public int hazardCount;
 	public float spawnWait;
 	public float startWait;
 	public float waveWait;
 
+	public GUIText restartText;
+	public GUIText gameOverText;
 	public GUIText scoreText;
+
+	private bool gameOver;
+	private bool restart;
 	private int score;
 
 
 	void Start() 
 	{
+		//Turn off gameOver and restart flags
+		gameOver = false;
+		restart = false;
+
+		//Deactivate text objects
+		restartText.text = "";
+		gameOverText.text = "";
+
+		//Initialize score to 0
 		score = 0;
+		UpdateScore ();
+
+		//Start Spawning Waves
 		StartCoroutine(SpawnWaves ());
 	}
 
-
+	void Update()
+	{
+		if (restart) {
+			if (Input.GetKeyDown (KeyCode.R)) {
+				UnityEngine.SceneManagement.SceneManager.LoadScene (UnityEngine.SceneManagement.SceneManager.GetActiveScene ().buildIndex);
+			}
+		}
+	}
 	IEnumerator SpawnWaves()
 	{
+		GameObject hazard = hazards[Random.Range(0,hazards.Length)];
 		yield return new WaitForSeconds (startWait);
 		while(true) 
 		{
@@ -33,6 +58,12 @@ public class GameController : MonoBehaviour {
 				yield return new WaitForSeconds (spawnWait);
 			}
 			yield return new WaitForSeconds (waveWait);
+
+			if (gameOver) {
+				restartText.text = "Press 'R' to restart";
+				restart = true;
+				break;
+			}
 		}
 
 	}
@@ -46,5 +77,11 @@ public class GameController : MonoBehaviour {
 	void UpdateScore()
 	{
 		scoreText.text = "Score: " + score;
+	}
+
+	public void GameOver()
+	{
+		gameOverText.text = "Game Over";
+		gameOver = true;
 	}
 }
